@@ -1,10 +1,8 @@
 package com.eurekaclient.resource.controllers;
-
 import com.eurekaclient.resource.entity.Resource;
 import com.eurekaclient.resource.services.ResourceService;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 import java.util.List;
 
 @RestController
@@ -13,13 +11,28 @@ public class ResourceController {
     @Autowired
     ResourceService resourceService;
 
-    @GetMapping("/list")
-    public List<Resource> list(){
+    @PostMapping("/resources")
+    public Resource create(Resource resource){
+        return resourceService.add(resource);
+    }
+
+    @GetMapping("/resources")
+    List<Resource> getResources(){
         return resourceService.getAll();
     }
 
-    @GetMapping("/msg")
-    public String msg() {
-        return "this is resource msg";
+    @GetMapping("/resources/{resourceId}")
+    Resource getResource(@PathVariable("resourceId") int resourceId){
+        return resourceService.getById(resourceId);
+    }
+
+    @PutMapping("/resources/{resourceId}")
+    Resource update(@PathVariable("resourceId") int resourceId, Resource resource){
+        return resourceService.update(resourceId,resource);
+    }
+
+    @DeleteMapping("/resources/{resourceId}")
+    Resource delete(@PathVariable("resourceId") int resourceId){
+        return resourceService.delete(resourceId);
     }
 }
